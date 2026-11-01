@@ -1,0 +1,90 @@
+{
+  "name": "xehn-desktop",
+  "version": "1.0.0",
+  "description": "XEHN Desktop — a Windows 10 client for Cloudflare WARP driven by the mihomo core",
+  "main": "./out/main/index.js",
+  "author": "xehn-desktop",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "test:engine": "tsx scripts/engine-test.ts",
+    "smoke": "electron-vite build && electron . --smoke",
+    "pack": "electron-vite build && electron-builder --win --dir",
+    "dist": "electron-vite build && electron-builder --win",
+    "dist:portable": "electron-vite build && electron-builder --win portable"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "maxmind": "^5.0.7",
+    "undici": "^7.16.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.5.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@types/ws": "^8.18.1",
+    "@vitejs/plugin-react": "^5.0.3",
+    "electron": "^45.1.0",
+    "electron-builder": "^26.18.0",
+    "electron-vite": "^6.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7"
+  },
+  "build": {
+    "appId": "io.xehn.desktop",
+    "productName": "XEHN Desktop",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources",
+        "to": "resources",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "XEHN Desktop",
+      "artifactName": "XEHN-Desktop-Setup-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "XEHN-Desktop-Portable-${version}-${arch}.${ext}"
+    }
+  }
+}
